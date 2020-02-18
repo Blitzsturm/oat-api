@@ -1,0 +1,206 @@
+
+#app
+{
+    background-color: rgb(0, 0, 32);
+    bottom: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    left:0px;
+    overflow: hidden;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+button
+{
+    background: rgb(192,32,32) linear-gradient(0deg, rgb(0,0,128),rgb(128,128,255));
+    border: 1px solid rgb(0,0,0);
+    border-radius: 4px;
+    color: rgb(255,255,255);
+    padding: 4px;
+}
+
+button:disabled
+{
+    opacity: 0.25;
+}
+
+button:hover
+{
+    border: 1px solid rgb(255,255,192);
+    color: rgb(255,255,192);
+}
+
+button:active
+{
+    border: 1px solid rgb(128,128,255);
+    color: rgb(128,128,255);
+}
+
+
+div.loginPrompt
+{
+    display: flex;
+    justify-content: center;
+    left: 0px;
+    padding: 0px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+
+    &>div
+    {
+        
+        border: 2px solid black;
+        border-radius: 8px;
+        color: rgb(0,0,0);
+        margin-top: 100px;
+        overflow: hidden;
+        width: 300px;
+
+        &>div:nth-child(1)
+        {
+            background-image: linear-gradient(0deg, rgba(0,0,128,0.50),rgba(128,128,255,0.50));;
+            border-bottom: 1px solid rgb(0,0,0);
+            color: rgb(255,255,255);
+            font-weight: bold;
+            padding: 6px;
+            user-select: none;
+        }
+
+        &>div:nth-child(2)
+        {
+            background-color: rgba(255,255,255,0.50);
+            padding: 8px;
+        }
+
+        &>div:nth-child(3)
+        {
+            background-color: rgba(255,255,255,0.50);
+            padding: 8px;
+            flex-wrap: nowrap;
+
+            &>button
+            {
+                float: right;
+            }
+        }
+    }
+
+}
+
+.flipUp
+{
+    transform: perspective(500px) rotateX(0deg);
+    transform-style: preserve-3d;
+    transform-origin: top;
+    transition: transform 500ms;
+}
+
+.flipUpHide
+{
+    transform: perspective(500px) rotateX(-90deg);
+}
+
+.flipLeft
+{
+    transform: perspective(500px) rotateY(0deg);
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transition: transform 500ms;
+}
+
+.flipLeftHide
+{
+    transform: perspective(500px) rotateY(90deg);
+}
+
+
+/****[ SETTINGS BOX ]********************************/
+
+.settings
+{
+    border: 1px solid #000;
+    border-radius: 5px;
+    display: grid;
+    font-size: 14px;
+    grid-gap: 1px;
+    grid-template-columns: min-content auto;
+    padding: 1px;
+}
+
+.settings>*:nth-child(1)
+{
+    border-top-left-radius: 4px;
+}
+
+.settings>*:nth-child(2)
+{
+    border-top-right-radius: 4px;
+}
+
+.settings>*:nth-last-child(1)
+{
+    border-bottom-right-radius: 4px;
+}
+
+.settings>*:nth-last-child(2)
+{
+    border-bottom-left-radius: 4px;
+}
+
+.settings>label
+{
+    background-color: #444;
+    background-image: linear-gradient(rgba(64,64,64,0.0), rgba(0,0,0,1.0));
+    border: 1px solid #000;
+    color: #FFF;
+    padding: 2px;
+    text-align: right;
+    user-select: none;
+    white-space: nowrap;    
+}
+
+.settings>label:after
+{
+    content: ":";
+}
+
+.settings>select,
+.settings>input,
+.settings>div
+{
+    background-color: rgba(255,255,255,0.75);
+    color: rgb(0,0,0);
+}
+
+
+.textBody
+{
+    background-color:rgba(0,0,0,0.75);
+    border-radius:6px;
+    border: 2px solid #FFF;
+    color: rgb(255,255,255);
+    height:600px;
+    margin:8px;
+    width:calc(100% - 24px);
+    resize: none;
+}
+
+div.loadingSpinner
+{
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    z-index: 1000;
+}
+
+div.loadingSpinner>div
+{
+    height: 100px;
+    width: 100px;
+    animation: spin 1.5s ease infinite;
+}
+@keyframes spin { 100% { transform:rotate(360deg); } }
