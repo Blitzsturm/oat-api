@@ -26,24 +26,24 @@
 
 	<div [class]="{settings: true, flipUp: true, flipUpHide: !loggedIn}" style="margin: 8px;">
 
-		<label *ngIf="oas.databases">Database</label>
-		<select *ngIf="oas.databases" (change)="oas.switchDatabase()" [(ngModel)]="oas.database">
-			<option *ngFor="let database of oas.databases" [value]="database.id">{{database.clientName}}</option>
+		<label *ngIf="databases.length">Database</label>
+		<select *ngIf="databases.length" (change)="oas.switchDatabase()" [(ngModel)]="oas.database">
+			<option *ngFor="let database of databases" [value]="database.id">{{database.clientName}}</option>
 		</select>
 
-		<label *ngIf="oas.endpoints">Domains</label>
-		<select *ngIf="oas.endpoints" [(ngModel)]="oas.domain">
-			<option *ngFor="let domain of oas.endpoints | keyvalue">{{domain.key}}</option>
+		<label *ngIf="domains.length">Domains</label>
+		<select *ngIf="domains.length" [(ngModel)]="oas.domain">
+			<option *ngFor="let domain of domains">{{domain}}</option>
 		</select>
 		
-		<label *ngIf="oas.endpoints">Endpoints</label>
-		<select *ngIf="oas.endpoints" [(ngModel)]="oas.endpoint">
-			<option *ngFor="let endpoint of oas.endpoints[oas.domain] | keyvalue">{{endpoint.key}}</option>
+		<label *ngIf="endpoints.length">Endpoints</label>
+		<select *ngIf="endpoints.length" [(ngModel)]="oas.endpoint">
+			<option *ngFor="let endpoint of endpoints">{{endpoint}}</option>
 		</select>
 
-		<label *ngIf="oas.endpoints">Method</label>
-		<select *ngIf="oas.endpoints" [(ngModel)]="oas.method" [size]="oas.endpoints[oas.domain][oas.endpoint]?.length||1">
-			<option *ngFor="let method of oas.endpoints[oas.domain][oas.endpoint]">{{method}}</option>
+		<label *ngIf="methods.length">Method</label>
+		<select *ngIf="methods.length" [(ngModel)]="oas.method" [size]="methods.length">
+			<option *ngFor="let method of methods">{{method}}</option>
 		</select>
 
 		<ng-template ngFor let-v [ngForOf]="oas.varList">
@@ -51,12 +51,19 @@
 			<input type="text" [(ngModel)]="v.value" />
 		</ng-template>
 
+		<ng-template ngFor let-p [ngForOf]="oas.paramiters">
+			<input type="text" (change)="oas.checkParams()" [(ngModel)]="p.key" style="color:#7F7" class="label" />
+			<input type="text" (change)="oas.checkParams()" [(ngModel)]="p.value" />
+		</ng-template>
+
 		<label *ngIf="oas.path">Path</label>
-		<div *ngIf="oas.path" (click)="LoadURL()">{{oas.path}}</div>
+		<div *ngIf="oas.path" (click)="LoadURL()" style="text-decoration: underline;color:rgb(0,0,128);cursor:pointer;">{{oas.baseURL}}{{oas.path}}</div>
 		
 	</div>
 
-	<textarea [(ngModel)]="res" [class]="{textBody: true, flipLeft: true, flipLeftHide: !loggedIn}"></textarea>
+	<textarea [(ngModel)]="res" [class]="{textBody: true, flipLeft: true, flipLeftHide: !loggedIn}" spellcheck="false"></textarea>
+
+	<button [class]="{red: true, flipLeft: true, flipLeftHide: !loggedIn}" style="position:absolute;left:10px;bottom:10px;" title="Logout" (click)="oas.logout()">&#10005;</button>
 
 	<div class="loadingSpinner" *ngIf="oas.loading">
 		<div>

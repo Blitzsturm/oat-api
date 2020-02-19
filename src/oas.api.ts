@@ -8,8 +8,12 @@ export class oas_core
 
 	}
 
+	////////////////////////////////////////////////////////////////
+	// Internal variables
+
 	public loading: boolean = false;
 	public baseURL: string = "https://api.orionadvisor.com/api/v1";
+	public paramiters: Array<paramiter> = [{key: "", value: ""}];
 
 	////////////////////////////////////////////////////////////////
 	// Performance ennhancing Value Cache
@@ -96,9 +100,12 @@ export class oas_core
 	public get path(): string
 	{
 		if (!this.baseURL || !this.domain || !this.endpoint) return "";
-		var p: string = `/${this.domain}/${this.endpoint}`;
-		for (let m of this.varList||[]) p = p.replace(RegExp(`\{${m.name}.*?\}`), encodeURIComponent(m.value));
-		return p;
+		var path: string = `/${this.domain}/${this.endpoint}`;
+		for (let v of this.varList||[])
+			path = path.replace(RegExp(`\{${v.name.replace("*", "\\*")}.*?\}`), encodeURIComponent(v.value));
+		if (this.paramiters.filter(o=>o.key&&o.value).length > 0)
+			path += "?" + this.paramiters.filter(o=>o.key&&o.value).map(o=>o.key+"="+encodeURIComponent(o.value)).join("&");
+		return path;
 	}
 
 	private get vars(): Array<any>
@@ -113,15 +120,21 @@ export class oas_core
 		return rxr;
 	}
 
+	public checkParams(): void
+	{
+		this.paramiters = this.paramiters.filter(o => o.key);
+		this.paramiters.push({key: "", value: ""});
+	}
+
 	////////////////////////////////////////////////////////////////
 	// Primary functions
 
 	public async call(body?: string): Promise<any>
 	{
-		return await this.request(this.method, this.path, body);
+		return await this.request(this.method, this.path, {body});
 	}
 
-	public async request(method: string, path: string, options: any = {}, body?: string): Promise<any>
+	public async request(method: string, path: string, options: any = {}): Promise<any>
 	{
 		this.loading = true;
 		try
@@ -138,7 +151,7 @@ export class oas_core
 		{
 			if (e.status == 401) this.logout();
 			
-			console.log("ERROR!");
+			console.log("%c💩ERROR:", "color:#F00;font-size:20px;");
 			console.log(e);
 
 			this.loading = false;
@@ -202,6 +215,12 @@ export class oas_core
 /****************************************************************\
 | Interfaces
 \****************************************************************/
+
+interface paramiter
+{
+	key: string;
+	value: string;
+}
 
 export interface kvp
 {
